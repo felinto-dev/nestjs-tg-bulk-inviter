@@ -8,14 +8,26 @@ export class AccountsUpdate {
 
   @Command('export')
   async export(ctx: Context) {
-    const stringSessions = await this.accounts.exportSessions();
+    const sessions = this.accounts.exportSessions();
+    const json = JSON.stringify(sessions);
 
-    if (!stringSessions.length) {
+    if (!sessions.length) {
       return ctx.reply('No accounts found');
     }
 
-    const buffer = Buffer.from(JSON.stringify(stringSessions));
+    const previewFileLink =
+      'https://jsonformatter.curiousconcept.com/?data=' +
+      encodeURIComponent(json) +
+      '&process=true';
+
+    const buffer = Buffer.from(json);
     const file = new InputFile(buffer, 'sessions.json');
-    return ctx.replyWithDocument(file);
+    return ctx.replyWithDocument(file, {
+      caption:
+        'Here are your sessions. You can import them by sending the file later to me. You can also preview them here: <a href="' +
+        previewFileLink +
+        '">Preview</a>',
+      parse_mode: 'HTML',
+    });
   }
 }
