@@ -37,7 +37,7 @@ export class TelegramClientService {
     const isUserAuthorized = await client.isUserAuthorized();
 
     if (isUserAuthorized) {
-      return { client, stringSession: account.stringSession };
+      return { client, ...account };
     }
   }
 
@@ -53,7 +53,7 @@ export class TelegramClientService {
     const stringSession = client.session.save() as unknown as string;
 
     if (isUserAuthorized) {
-      return { client, stringSession };
+      return { client, stringSession, ...account };
     }
   }
 }

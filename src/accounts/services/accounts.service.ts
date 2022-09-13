@@ -3,6 +3,8 @@ import { TelegramClient } from 'telegram';
 
 export type Account = {
   client: TelegramClient;
+  apiId: number;
+  apiHash: string;
   stringSession: string;
 };
 
@@ -22,7 +24,11 @@ export class AccountsService {
     return this.accounts.length;
   }
 
-  async exportSessions() {
-    return this.accounts.map((account) => account.stringSession);
+  exportSessions() {
+    return this.accounts.map((account) => ({
+      apiId: account.apiId,
+      apiHash: account.apiHash,
+      stringSession: account.stringSession,
+    }));
   }
 }
