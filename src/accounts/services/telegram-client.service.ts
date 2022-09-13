@@ -7,6 +7,7 @@ import {
   AddAccountByStringSession,
   App,
 } from '../inputs/add-account.input';
+import { Account } from './accounts.service';
 
 @Injectable()
 export class TelegramClientService {
@@ -22,7 +23,9 @@ export class TelegramClientService {
     return client;
   }
 
-  async loginByStringSession(account: AddAccountByStringSession) {
+  async loginByStringSession(
+    account: AddAccountByStringSession,
+  ): Promise<Account> {
     const client = await this.setupTelegramClient(
       {
         apiId: account.apiId,
@@ -30,19 +33,27 @@ export class TelegramClientService {
       },
       account.stringSession,
     );
+
     const isUserAuthorized = await client.isUserAuthorized();
-    const stringSession = client.session.save() as unknown as string;
-    return isUserAuthorized ? { client, stringSession } : null;
+
+    if (isUserAuthorized) {
+      return { client, stringSession: account.stringSession };
+    }
   }
 
-  async loginByBotToken(account: AddAccountByBotToken) {
+  async loginByBotToken(account: AddAccountByBotToken): Promise<Account> {
     const client = await this.setupTelegramClient({
       apiId: account.apiId,
       apiHash: account.apiHash,
     });
+
     await client.start({ botAuthToken: account.botToken });
+
     const isUserAuthorized = await client.isUserAuthorized();
     const stringSession = client.session.save() as unknown as string;
-    return isUserAuthorized ? { client, stringSession } : null;
+
+    if (isUserAuthorized) {
+      return { client, stringSession };
+    }
   }
 }

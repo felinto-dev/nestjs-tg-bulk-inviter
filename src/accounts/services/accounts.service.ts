@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TelegramClient } from 'telegram';
 
-type Account = {
+export type Account = {
   client: TelegramClient;
   stringSession: string;
 };
