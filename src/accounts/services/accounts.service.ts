@@ -12,4 +12,8 @@ export class AccountsService {
   getAccounts() {
     return this.accounts;
   }
+
+  countAccounts() {
+    return this.accounts.length;
+  }
 }
