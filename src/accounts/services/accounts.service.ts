@@ -21,4 +21,8 @@ export class AccountsService {
   countAccounts() {
     return this.accounts.length;
   }
+
+  async exportSessions() {
+    return this.accounts.map((account) => account.stringSession);
+  }
 }
