@@ -22,13 +22,7 @@ export class AccountsController {
     const isUserAuthorized = await client.isUserAuthorized();
 
     if (isUserAuthorized) {
-      this.accounts.addAccount({
-        apiId: body.apiId,
-        apiHash: body.apiHash,
-        stringSession: body.stringSession,
-      });
+      this.accounts.addAccount(client);
     }
-
-    return this.accounts;
   }
 }

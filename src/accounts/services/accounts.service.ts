@@ -1,16 +1,11 @@
 import { Injectable } from '@nestjs/common';
-
-type Account = {
-  apiId: number;
-  apiHash: string;
-  stringSession: string;
-};
+import { TelegramClient } from 'telegram';
 
 @Injectable()
 export class AccountsService {
-  private readonly accounts: Account[] = [];
+  private readonly accounts: TelegramClient[] = [];
 
-  addAccount(account: Account) {
+  addAccount(account: TelegramClient) {
     this.accounts.push(account);
   }
 
