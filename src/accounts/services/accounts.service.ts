@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
 type Account = {
-  phone: string;
-  appId: number;
+  apiId: number;
   apiHash: string;
+  stringSession: string;
 };
 
 @Injectable()
