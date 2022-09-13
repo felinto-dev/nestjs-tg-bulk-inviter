@@ -13,7 +13,7 @@ export class AccountsController {
   constructor(private readonly accounts: AccountsService) {}
 
   @Post('string_session')
-  async addAccountbyStringSession(@Body() account: AddAccountByStringSession) {
+  async addAccountByStringSession(@Body() account: AddAccountByStringSession) {
     const client = new TelegramClient(
       new StringSession(account.stringSession),
       +account.apiId,
@@ -33,7 +33,7 @@ export class AccountsController {
   }
 
   @Post('bot_token')
-  async addAccountbyBotToken(@Body() account: AddAccountByBotToken) {
+  async addAccountByBotToken(@Body() account: AddAccountByBotToken) {
     const client = new TelegramClient(
       new StringSession(),
       +account.apiId,
