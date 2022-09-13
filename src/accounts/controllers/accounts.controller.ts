@@ -10,11 +10,11 @@ export class AccountsController {
   constructor(private readonly accounts: AccountsService) {}
 
   @Post('string_session')
-  async addAccountbyStringSession(@Body() body: AddAccountInput) {
+  async addAccountbyStringSession(@Body() account: AddAccountInput) {
     const client = new TelegramClient(
-      new StringSession(body.stringSession),
-      +body.apiId,
-      body.apiHash,
+      new StringSession(account.stringSession),
+      +account.apiId,
+      account.apiHash,
       { connectionRetries: 5 },
     );
     client.setLogLevel(LogLevel.NONE);
@@ -22,7 +22,10 @@ export class AccountsController {
     const isUserAuthorized = await client.isUserAuthorized();
 
     if (isUserAuthorized) {
-      this.accounts.addAccount(client);
+      this.accounts.addAccount({
+        client,
+        stringSession: account.stringSession,
+      });
     }
   }
 }

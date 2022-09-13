@@ -30,7 +30,9 @@ export class GroupsController {
     const accounts = this.accounts.getAccounts();
 
     for (const account of accounts) {
-      const participants = account.iterParticipants(groupUsername, { limit });
+      const participants = account.client.iterParticipants(groupUsername, {
+        limit,
+      });
       for await (const participant of participants) {
         members.push({
           id: participant.id,
