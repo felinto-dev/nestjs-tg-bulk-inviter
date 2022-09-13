@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AccountsController } from './controllers/accounts.controller';
 import { AccountsService } from './services/accounts.service';
 import { TelegramClientService } from './services/telegram-client.service';
-import { AccountsUpdate } from './update/account.update';
+import { AccountsUpdate } from './update/accounts.update';
 
 @Module({
   controllers: [AccountsController],
