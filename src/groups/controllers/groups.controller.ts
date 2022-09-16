@@ -17,8 +17,6 @@ export class GroupsController {
     @Param('groupId') groupUsername: number,
     @Body() filter: GroupMembersDto,
   ) {
-    const members = [];
-
     const totalNumberOfAccounts = this.accounts.countAccounts();
 
     if (totalNumberOfAccounts === 0) {
@@ -29,10 +27,13 @@ export class GroupsController {
 
     const accounts = this.accounts.getAccounts();
 
+    const members = [];
+
     for (const account of accounts) {
       const participants = account.client.iterParticipants(groupUsername, {
         limit: filter.limit,
       });
+
       for await (const participant of participants) {
         if (participant.bot !== filter.accounts.bots) {
           continue;
