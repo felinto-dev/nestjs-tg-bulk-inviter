@@ -1,12 +1,12 @@
 import {
   BadRequestException,
+  Body,
   Controller,
-  DefaultValuePipe,
   Get,
   Param,
-  Query,
 } from '@nestjs/common';
 import { AccountsService } from '../../accounts/services/accounts.service';
+import { GroupMembersDto } from '../dto/group-members.dto';
 
 @Controller('groups')
 export class GroupsController {
@@ -15,7 +15,7 @@ export class GroupsController {
   @Get('members/:groupId')
   async getMembers(
     @Param('groupId') groupUsername: number,
-    @Query('limit', new DefaultValuePipe(10)) limit: number,
+    @Body() filter: GroupMembersDto,
   ) {
     const members = [];
 
@@ -31,9 +31,13 @@ export class GroupsController {
 
     for (const account of accounts) {
       const participants = account.client.iterParticipants(groupUsername, {
-        limit,
+        limit: filter.limit,
       });
       for await (const participant of participants) {
+        if (participant.bot !== filter.accounts.bots) {
+          continue;
+        }
+
         members.push({
           id: participant.id,
           accessHash: participant.accessHash,
